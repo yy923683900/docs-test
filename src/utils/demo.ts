@@ -2,7 +2,7 @@ import { Octokit } from "octokit";
 import config from "../../env"
 import { dayjs } from "element-plus";
 
-const BASE_BRANCH = "master";
+const BASE_BRANCH = "main";
 
 const COMMON_HEADERS = {
   "X-GitHub-Api-Version": "2022-11-28",
