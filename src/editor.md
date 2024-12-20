@@ -40,7 +40,7 @@ const onUploadImg = async (files, callback) => {
 }
 
 const onSave = (v, h) => {
-  createPullRequest("src/guide/studio/intro.md", v)
+  createPullRequest("src/guide/designer/datasource.md", v)
 };
 
 </script>

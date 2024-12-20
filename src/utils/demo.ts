@@ -1,5 +1,5 @@
 import { Octokit } from "octokit";
-import config from "../../env"
+import config from "../../env";
 import { dayjs } from "element-plus";
 
 const BASE_BRANCH = "main";
@@ -48,7 +48,6 @@ export async function getBranch() {
 
 export async function createBranch() {
   const resp = await getBranch();
-  console.log(resp, 111)
   const branch = buildBranch();
   await octokit.request("POST /repos/{owner}/{repo}/git/refs", {
     owner,
@@ -74,7 +73,25 @@ export async function getFileSha(path: string) {
       },
     }
   );
-  return resp.sha;
+  return resp.data.sha;
+}
+
+function encodeToBase64(input: string) {
+  // 将输入字符串转换为 UTF-8 编码的字节数组
+  const utf8Encoder = new TextEncoder();
+  const utf8Bytes = utf8Encoder.encode(input);
+
+  // 创建一个二进制数组缓冲区
+  const binaryString = "";
+  const len = utf8Bytes.byteLength;
+  const bytes = new Uint8Array(len);
+  for (let i = 0; i < len; i++) {
+    bytes[i] = utf8Bytes[i];
+  }
+
+  // 将二进制数据转换为 Base64 编码
+  const base64EncodedString = btoa(String.fromCharCode(...bytes));
+  return base64EncodedString;
 }
 
 export async function updateFile(
@@ -82,7 +99,7 @@ export async function updateFile(
   path: string,
   content: string
 ) {
-  const base64Content = Buffer.from(content).toString("base64");
+  const base64Content = encodeToBase64(content);
   const sha = await getFileSha(path);
   await octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", {
     owner,
